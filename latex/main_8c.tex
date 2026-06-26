@@ -1,0 +1,249 @@
+\doxysection{src/\+main.c File Reference}
+\hypertarget{main_8c}{}\label{main_8c}\index{src/main.c@{src/main.c}}
+
+
+Comunicación por consola de comandos UART para ESP32.  
+
+
+{\ttfamily \+\#include $<$stdio.\+h$>$}\newline
+{\ttfamily \+\#include $<$string.\+h$>$}\newline
+{\ttfamily \+\#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \+\#include $<$driver/\+uart.\+h$>$}\newline
+{\ttfamily \+\#include $<$driver/\+uart\+\_\+vfs.\+h$>$}\newline
+{\ttfamily \+\#include $<$freertos/\+\+Free\+RTOS.\+h$>$}\newline
+{\ttfamily \+\#include $<$freertos/\+task.\+h$>$}\newline
+{\ttfamily \+\#include "{}hardware.\+h"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \doxymbox{\hyperlink{structcmd}{cmd}}
+\begin{DoxyCompactList}\small\item\em Entrada de la tabla de comandos. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef int(\texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{main_8c_a5d6bc390e037df82431a981f99f2339e}{p\+Action}}) (int, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*})
+\begin{DoxyCompactList}\small\item\em Tipo de puntero a método para utilizar la consola de comandos. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \doxymbox{\hyperlink{main_8c_aedd79114ce32c8fb603518e807e6869b}{help}} (int argc, char \texorpdfstring{$\ast$}{*}argv\+[$\,$]\+)
+\begin{DoxyCompactList}\small\item\em Prototipos de las funciones a implementar en el ESP32. \end{DoxyCompactList}\item 
+int \doxymbox{\hyperlink{main_8c_aeb220dc0864f5901c21ee1bce1d4f289}{sumar}} (int argc, char \texorpdfstring{$\ast$}{*}argv\+[$\,$]\+)
+\item 
+int \doxymbox{\hyperlink{main_8c_a310a92339addebc32c7f07194dd6810f}{restar}} (int argc, char \texorpdfstring{$\ast$}{*}argv\+[$\,$]\+)
+\item 
+int \doxymbox{\hyperlink{main_8c_a25ea5b6151863e7e2231f5ae84e29d78}{mult}} (int argc, char \texorpdfstring{$\ast$}{*}argv\+[$\,$]\+)
+\item 
+int \doxymbox{\hyperlink{main_8c_a34499fa2be95d34379239024d000aee9}{cmd\+Led\+On}} (int argc, char \texorpdfstring{$\ast$}{*}argv\+[$\,$]\+)
+\item 
+int \doxymbox{\hyperlink{main_8c_a45f8d94c2c35b4cc9feb59ab3a86feff}{cmd\+Led\+Off}} (int argc, char \texorpdfstring{$\ast$}{*}argv\+[$\,$]\+)
+\item 
+int \doxymbox{\hyperlink{main_8c_aac92830ba07e7482502d7370e231649d}{cmd\+Led\+Param}} (int argc, char \texorpdfstring{$\ast$}{*}argv\+[$\,$]\+)
+\item 
+int \doxymbox{\hyperlink{main_8c_a239cc60ac5e14b60577b9173dfe9e251}{cmd\+Led\+Blink}} (int argc, char \texorpdfstring{$\ast$}{*}argv\+[$\,$]\+)
+\item 
+void \doxymbox{\hyperlink{main_8c_a963a0005bb594bf43459bb456705607b}{get\+String}} (char \texorpdfstring{$\ast$}{*}buffer)
+\begin{DoxyCompactList}\small\item\em void \doxylink{main_8c_a963a0005bb594bf43459bb456705607b}{get\+String(char \texorpdfstring{$\ast$}{*}buffer)} \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{main_8c_a630544a7f0a2cc40d8a7fefab7e2fe70}{app\+\_\+main}} (void)
+\begin{DoxyCompactList}\small\item\em void \doxylink{main_8c_a630544a7f0a2cc40d8a7fefab7e2fe70}{app\+\_\+main(void)} \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Comunicación por consola de comandos UART para ESP32. 
+
+En este codigo implementariamos una consola de comando que recibirar el microcontrolador ESP32 WROOM Será implementado en Visual Studio Code, con la extensión de Platform\+IO y el firmware de Espresiff A continuación desarrollaremos cada método en fin de lograr entender su implementación.
+
+Los comandos disponibles permiten controlar un LED y realizar operaciones aritméticas simples.
+
+Definición del tipo puntero a función para los comandos 
+
+\label{doc-typedef-members}
+\Hypertarget{main_8c_doc-typedef-members}
+\doxysubsection{Typedef Documentation}
+\Hypertarget{main_8c_a5d6bc390e037df82431a981f99f2339e}\index{main.c@{main.c}!pAction@{pAction}}
+\index{pAction@{pAction}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{pAction}{pAction}}
+{\footnotesize\ttfamily \label{main_8c_a5d6bc390e037df82431a981f99f2339e} 
+typedef int(\texorpdfstring{$\ast$}{*} p\+Action) (int, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*})}
+
+
+
+Tipo de puntero a método para utilizar la consola de comandos. 
+
+Cada comando recibe una cantidad de argumentos y un vector de strings.
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & Cantidad de argumentos a ingresar. \\
+\hline
+{\em argv} & Vector de argumentos a ingresar.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 si el comando se ejecuta correctamente, distinto de 0 si falla. 
+\end{DoxyReturn}
+
+
+\label{doc-func-members}
+\Hypertarget{main_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{main_8c_a630544a7f0a2cc40d8a7fefab7e2fe70}\index{main.c@{main.c}!app\_main@{app\_main}}
+\index{app\_main@{app\_main}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{app\_main()}{app\_main()}}
+{\footnotesize\ttfamily \label{main_8c_a630544a7f0a2cc40d8a7fefab7e2fe70} 
+void app\+\_\+main (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+void \doxylink{main_8c_a630544a7f0a2cc40d8a7fefab7e2fe70}{app\+\_\+main(void)} 
+
+Inicializa los recursos necesarios para que se pueda ejecutar el programa, incluyendo la interfaz UART y el hardware del ESP32. Seguido, implementa un bucle el cual recibe comandos desde la terminal serie, los interpreta y ejecuta el método asociado mediante la tabla de comandos. \begin{DoxyVerb}El procesamiento de comandos se realiza de manera secuencial hasta que el
+\end{DoxyVerb}
+ programa es reiniciado o apagado.
+
+\begin{DoxyNote}{Note}
+Esta función constituye el punto de entrada de la aplicación en ESP-\/\+IDF y es invocada automáticamente por el sistema operativo Free\+RTOS durante el inicio del firmware. 
+\end{DoxyNote}
+\Hypertarget{main_8c_a239cc60ac5e14b60577b9173dfe9e251}\index{main.c@{main.c}!cmdLedBlink@{cmdLedBlink}}
+\index{cmdLedBlink@{cmdLedBlink}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{cmdLedBlink()}{cmdLedBlink()}}
+{\footnotesize\ttfamily \label{main_8c_a239cc60ac5e14b60577b9173dfe9e251} 
+int cmd\+Led\+Blink (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\+[$\,$]\+}\end{DoxyParamCaption})}
+
+\Hypertarget{main_8c_a45f8d94c2c35b4cc9feb59ab3a86feff}\index{main.c@{main.c}!cmdLedOff@{cmdLedOff}}
+\index{cmdLedOff@{cmdLedOff}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{cmdLedOff()}{cmdLedOff()}}
+{\footnotesize\ttfamily \label{main_8c_a45f8d94c2c35b4cc9feb59ab3a86feff} 
+int cmd\+Led\+Off (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\+[$\,$]\+}\end{DoxyParamCaption})}
+
+\Hypertarget{main_8c_a34499fa2be95d34379239024d000aee9}\index{main.c@{main.c}!cmdLedOn@{cmdLedOn}}
+\index{cmdLedOn@{cmdLedOn}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{cmdLedOn()}{cmdLedOn()}}
+{\footnotesize\ttfamily \label{main_8c_a34499fa2be95d34379239024d000aee9} 
+int cmd\+Led\+On (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\+[$\,$]\+}\end{DoxyParamCaption})}
+
+\Hypertarget{main_8c_aac92830ba07e7482502d7370e231649d}\index{main.c@{main.c}!cmdLedParam@{cmdLedParam}}
+\index{cmdLedParam@{cmdLedParam}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{cmdLedParam()}{cmdLedParam()}}
+{\footnotesize\ttfamily \label{main_8c_aac92830ba07e7482502d7370e231649d} 
+int cmd\+Led\+Param (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\+[$\,$]\+}\end{DoxyParamCaption})}
+
+\Hypertarget{main_8c_a963a0005bb594bf43459bb456705607b}\index{main.c@{main.c}!getString@{getString}}
+\index{getString@{getString}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{getString()}{getString()}}
+{\footnotesize\ttfamily \label{main_8c_a963a0005bb594bf43459bb456705607b} 
+void get\+String (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{buffer}{}\end{DoxyParamCaption})}
+
+
+
+void \doxylink{main_8c_a963a0005bb594bf43459bb456705607b}{get\+String(char \texorpdfstring{$\ast$}{*}buffer)} 
+
+Capta los caracteres ingresados por el usuario a través de la consola UART y los almacena en el buffer indicado hasta recibir un salto de línea (~\newline
+). Al finalizar la lectura, agrega el caracter nulo (\textbackslash{}0) para formar el string válido en C.
+
+\begin{DoxyNote}{Note}
+La función bloquea el buffer esperando a que el usuario ingrese Enter.
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+No verifica el tamaño del buffer. Se debe tener en cuenta la capacidad para evitar el desbordamiento de memoria. 
+\end{DoxyWarning}
+\Hypertarget{main_8c_aedd79114ce32c8fb603518e807e6869b}\index{main.c@{main.c}!help@{help}}
+\index{help@{help}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{help()}{help()}}
+{\footnotesize\ttfamily \label{main_8c_aedd79114ce32c8fb603518e807e6869b} 
+int help (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\+[$\,$]\+}\end{DoxyParamCaption})}
+
+
+
+Prototipos de las funciones a implementar en el ESP32. 
+
+int \doxylink{main_8c_aedd79114ce32c8fb603518e807e6869b}{help(int argc, char \texorpdfstring{$\ast$}{*}argv\+[$\,$]\+)}; 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\doxymbox{\hyperlink{main_8c_aedd79114ce32c8fb603518e807e6869b}{help}}}
+
+\end{DoxyCode}
+
+
+Al llamar a este método por consola de comandos, este brindará información con tal de describir todos los métodos disponibles para utilizar.
+
+int sumar (int argc, char \texorpdfstring{$\ast$}{*}argv\+[]\+); 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\doxymbox{\hyperlink{main_8c_aeb220dc0864f5901c21ee1bce1d4f289}{sumar}}\ a\ b\ }
+
+\end{DoxyCode}
+
+
+Este método suma dos enteros que el usuario ingrese seguido del nombre del método, como si se tratara de llamar una función en cmd de Windows.
+
+int restar (int argc, char \texorpdfstring{$\ast$}{*}argv\+[]\+); 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\doxymbox{\hyperlink{main_8c_a310a92339addebc32c7f07194dd6810f}{restar}}\ a\ b\ }
+
+\end{DoxyCode}
+ \begin{DoxyVerb}Resta dos enteros ingresados por el usuario en la consola de comandos.
+Muestra por pantalla los resultados.
+\end{DoxyVerb}
+
+
+int \doxylink{main_8c_a25ea5b6151863e7e2231f5ae84e29d78}{mult(int argc, char \texorpdfstring{$\ast$}{*}argv\+[$\,$]\+)}; 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\doxymbox{\hyperlink{main_8c_a25ea5b6151863e7e2231f5ae84e29d78}{mult}}\ a\ b\ }
+
+\end{DoxyCode}
+ \begin{DoxyVerb}A fin realizar las operaciones aritméticas mas elementales, implementamos un método
+\end{DoxyVerb}
+ el cual multiplica dos enteros ingresador por el usuario. El resultado se demuestra por pantalla
+
+int \doxylink{main_8c_a34499fa2be95d34379239024d000aee9}{cmd\+Led\+On(int argc, char \texorpdfstring{$\ast$}{*} argv\+[$\,$]\+)}; 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\doxymbox{\hyperlink{hardware_8c_aea202d95c0c143f0b08668405b300d29}{ledOn}}}
+
+\end{DoxyCode}
+ \begin{DoxyVerb}En este caso de llamada a método, no utilizaremos el comando on/off, solamente utilizaremos
+\end{DoxyVerb}
+ la palabra clave con tal de prender el LED del ESP32, sin llamar ningun argumento aparte.
+
+int \doxylink{main_8c_a45f8d94c2c35b4cc9feb59ab3a86feff}{cmd\+Led\+Off(int argc, char \texorpdfstring{$\ast$}{*} argv\+[$\,$]\+)}; 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\doxymbox{\hyperlink{hardware_8c_aa1eb3950edfed3d0043f0a1ec1b25b59}{ledOff}}}
+
+\end{DoxyCode}
+ \begin{DoxyVerb}De la misma manera que el método anterior, llamamos a un método diferente con tal de apagar
+\end{DoxyVerb}
+ el led utilizado.
+
+int \doxylink{main_8c_aac92830ba07e7482502d7370e231649d}{cmd\+Led\+Param(int argc, char \texorpdfstring{$\ast$}{*} argv\+[$\,$]\+)}; 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{led\ on}
+\DoxyCodeLine{led\ off}
+
+\end{DoxyCode}
+ \begin{DoxyVerb}Este comando interpreta el segundo argumento ingresado por le usuario.
+\end{DoxyVerb}
+ En caso de que fuera "{}on"{}, se enciende el LED. En caso de que sea "{}off"{}, el LED se apaga. Cualquier otro argumento es invalido.
+
+int \doxylink{main_8c_a239cc60ac5e14b60577b9173dfe9e251}{cmd\+Led\+Blink(int argc, char \texorpdfstring{$\ast$}{*} argv\+[$\,$]\+)}; 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{blink}
+
+\end{DoxyCode}
+ \begin{DoxyVerb}Activa una secuencia de tres parpadeos consecutivos del LED.
+\end{DoxyVerb}
+ Utilizaremos una rutina de control del LED de 300 \+[ms]\+ \Hypertarget{main_8c_a25ea5b6151863e7e2231f5ae84e29d78}\index{main.c@{main.c}!mult@{mult}}
+\index{mult@{mult}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{mult()}{mult()}}
+{\footnotesize\ttfamily \label{main_8c_a25ea5b6151863e7e2231f5ae84e29d78} 
+int mult (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\+[$\,$]\+}\end{DoxyParamCaption})}
+
+\Hypertarget{main_8c_a310a92339addebc32c7f07194dd6810f}\index{main.c@{main.c}!restar@{restar}}
+\index{restar@{restar}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{restar()}{restar()}}
+{\footnotesize\ttfamily \label{main_8c_a310a92339addebc32c7f07194dd6810f} 
+int restar (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\+[$\,$]\+}\end{DoxyParamCaption})}
+
+\Hypertarget{main_8c_aeb220dc0864f5901c21ee1bce1d4f289}\index{main.c@{main.c}!sumar@{sumar}}
+\index{sumar@{sumar}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{sumar()}{sumar()}}
+{\footnotesize\ttfamily \label{main_8c_aeb220dc0864f5901c21ee1bce1d4f289} 
+int sumar (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\+[$\,$]\+}\end{DoxyParamCaption})}
+

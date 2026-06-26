@@ -1,0 +1,79 @@
+\doxysection{include/\+hardware.h File Reference}
+\hypertarget{hardware_8h}{}\label{hardware_8h}\index{include/hardware.h@{include/hardware.h}}
+
+
+Interfaz para el control del hardware del LED.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{hardware_8h_a47191dfa6786da2498eb49ae28f8d361}{hardware\+\_\+init}} (void)
+\begin{DoxyCompactList}\small\item\em Inicializa el hardware del LED. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{hardware_8h_aea202d95c0c143f0b08668405b300d29}{led\+On}} (void)
+\begin{DoxyCompactList}\small\item\em Enciende el LED. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{hardware_8h_aa1eb3950edfed3d0043f0a1ec1b25b59}{led\+Off}} (void)
+\begin{DoxyCompactList}\small\item\em Apaga el LED. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{hardware_8h_a01faa1c640ae23cdc1e2d940378e7e47}{led\+Blink3}} (void)
+\begin{DoxyCompactList}\small\item\em Ejecuta una secuencia de parpadeo del LED. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interfaz para el control del hardware del LED. 
+
+Este archivo declara las funciones necesarias para inicializar y controlar el LED conectado al ESP32 mediante GPIO. 
+
+\label{doc-func-members}
+\Hypertarget{hardware_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{hardware_8h_a47191dfa6786da2498eb49ae28f8d361}\index{hardware.h@{hardware.h}!hardware\_init@{hardware\_init}}
+\index{hardware\_init@{hardware\_init}!hardware.h@{hardware.h}}
+\doxysubsubsection{\texorpdfstring{hardware\_init()}{hardware\_init()}}
+{\footnotesize\ttfamily \label{hardware_8h_a47191dfa6786da2498eb49ae28f8d361} 
+void hardware\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Inicializa el hardware del LED. 
+
+Configura el pin del GPIO asociado al LED como salida digital y establece su estado inicial en apagado.
+
+Configura el pin GPIO asociado al LED como salida digital, deshabilita las resistencias internas de pull-\/up y pull-\/down, desactiva las interrupciones y establece el LED inicialmente en estado apagado. \Hypertarget{hardware_8h_a01faa1c640ae23cdc1e2d940378e7e47}\index{hardware.h@{hardware.h}!ledBlink3@{ledBlink3}}
+\index{ledBlink3@{ledBlink3}!hardware.h@{hardware.h}}
+\doxysubsubsection{\texorpdfstring{ledBlink3()}{ledBlink3()}}
+{\footnotesize\ttfamily \label{hardware_8h_a01faa1c640ae23cdc1e2d940378e7e47} 
+void led\+Blink3 (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Ejecuta una secuencia de parpadeo del LED. 
+
+Realiza tres ciclos consecutivos de encedido y apagado del LED, manteniendo cada estado durante aproximadamente 300 \+[ms]\+.
+
+Ejecuta una secuencia de parpadeo del LED.
+
+Realiza tres ciclos consecutivos de encendido y apagado del LED, manteniendo cada estado por aproximadamente 300 \+[ms]\+. \Hypertarget{hardware_8h_aa1eb3950edfed3d0043f0a1ec1b25b59}\index{hardware.h@{hardware.h}!ledOff@{ledOff}}
+\index{ledOff@{ledOff}!hardware.h@{hardware.h}}
+\doxysubsubsection{\texorpdfstring{ledOff()}{ledOff()}}
+{\footnotesize\ttfamily \label{hardware_8h_aa1eb3950edfed3d0043f0a1ec1b25b59} 
+void led\+Off (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Apaga el LED. 
+
+Establece un nivel lógico bajo sobre el pin GPIO configurado para el LED.
+
+Establece un nivel lógico bajo sobre el pin GPIO asociado al LED. \Hypertarget{hardware_8h_aea202d95c0c143f0b08668405b300d29}\index{hardware.h@{hardware.h}!ledOn@{ledOn}}
+\index{ledOn@{ledOn}!hardware.h@{hardware.h}}
+\doxysubsubsection{\texorpdfstring{ledOn()}{ledOn()}}
+{\footnotesize\ttfamily \label{hardware_8h_aea202d95c0c143f0b08668405b300d29} 
+void led\+On (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Enciende el LED. 
+
+Establece un nivel lógico alto sobre el pin GPIO configurado para el LED.
+
+Establece un nivel lógico alto sobre el pin GPIO asociado al LED. 
